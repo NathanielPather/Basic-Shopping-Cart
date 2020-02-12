@@ -147,20 +147,8 @@ class Cart
     {
         $cart = $this->getCart();
         switch ($removeId) {
-            case 0:
-                $cart[0]["quantity"]--;
-                break;
-            case 1:
-                $cart[1]["quantity"]--;
-                break;
-            case 2:
-                $cart[2]["quantity"]--;
-                break;
-            case 3:
-                $cart[3]["quantity"]--;
-                break;
-            case 4:
-                $cart[4]["quantity"]--;
+            case $removeId:
+                $cart[$removeId]["quantity"]--;
                 break;
             default:
                 echo "default";
