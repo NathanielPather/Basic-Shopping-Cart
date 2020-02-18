@@ -2,6 +2,38 @@
 error_reporting(E_STRICT);
 session_start();
 
+class cartItem {
+    private $name;
+    private $price;
+    private $quantity;
+    private $totalPrice;
+
+    public function construct($product, $quantity) {
+        $this->name = $product->name;
+        $this->price = $product->price;
+        $this->quantity = $quantity;
+        $this->totalPrice = $this->price * $this->quantity;
+    }
+}
+
+class Cart2 {
+    private $products;
+    private $items;
+
+    public function __construct($products, $items = []) {
+        $this->products = $products;
+        $this->items = $items;
+    }
+
+    public function getItems() {
+        return $this->items;
+    }
+
+    public function add() {
+
+    }
+}
+
 class Cart
 {
     public function __construct()
@@ -160,6 +192,31 @@ class Cart
     }
 }
 
+class Product {
+    private $name;
+    private $price;
+
+    public function construct($name, $price) {
+        $this->name = $name;
+        $this->price = $price;
+    }
+}
+
+class productsRepository {
+    function getProducts() {
+        return
+            // ######## please do not alter the following code ########
+            $products = [
+                ["name" => "Sledgehammer", "price" => 125.75],
+                ["name" => "Axe", "price" => 190.50],
+                ["name" => "Bandsaw", "price" => 562.131],
+                ["name" => "Chisel", "price" => 12.9],
+                ["name" => "Hacksaw", "price" => 18.45],
+            ];
+            // ########################################################
+    }
+}
+
 class Products
 {
     private $products;
@@ -240,5 +297,43 @@ class Formatter
     {
 
         return number_format($number, 2);
+    }
+}
+
+class CartSessionStorage {
+    private $products;
+
+    public function loadCart() {
+
+    }
+
+    public function saveCart() {
+
+    }
+}
+
+class Renderer {
+    private $formatter;
+
+    public function __construct($formatter){
+        $this->formatter = $formatter;
+    }
+
+    public function renderProducts($products) {
+        $html = "";
+
+        foreach($products->getProducts() as $product) {
+
+        }
+        return $html;
+    }
+
+    public function renderCart($cart) {
+        $html = "";
+
+        foreach($cart->getItems() as $item) {
+
+        }
+        return $html;
     }
 }
