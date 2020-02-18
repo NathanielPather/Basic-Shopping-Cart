@@ -2,6 +2,9 @@
 error_reporting(E_STRICT);
 session_start();
 
+/*
+ * Represents individual cart items.
+ */
 class cartItem {
     private $name;
     private $price;
@@ -15,6 +18,10 @@ class cartItem {
         $this->totalPrice = $this->price * $this->quantity;
     }
 }
+
+/*
+ * Represents the cart.
+ */
 
 class Cart2 {
     private $products;
@@ -33,6 +40,10 @@ class Cart2 {
 
     }
 }
+
+/*
+ * Current cart that needs refactoring.
+ */
 
 class Cart
 {
@@ -192,6 +203,10 @@ class Cart
     }
 }
 
+/*
+ * Represents individual products,
+ */
+
 class Product {
     private $name;
     private $price;
@@ -201,6 +216,10 @@ class Product {
         $this->price = $price;
     }
 }
+
+/*
+ * Represents a list of products.
+ */
 
 class productsRepository {
     function getProducts() {
@@ -216,6 +235,10 @@ class productsRepository {
             // ########################################################
     }
 }
+
+/*
+ * Current product that needs refactoring.
+ */
 
 class Products
 {
@@ -271,6 +294,11 @@ class Products
     }
 }
 
+/*
+ * Represents the formatter.
+ * Needs refactoring.
+ */
+
 class Formatter
 {
 
@@ -300,6 +328,12 @@ class Formatter
     }
 }
 
+/*
+ * Represents storage for the cart.
+ * Probably more suited for handling database storing and loading.
+ * But good practice still.
+ */
+
 class CartSessionStorage {
     private $products;
 
@@ -311,6 +345,10 @@ class CartSessionStorage {
 
     }
 }
+
+/*
+ * Represents html render.
+ */
 
 class Renderer {
     private $formatter;
