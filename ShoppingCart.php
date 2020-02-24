@@ -53,14 +53,7 @@ class Cart
     function addToCart($productId)
     {
         $cart = $this->getCart();
-        switch ($productId) {
-            case $productId:
-                $cart[$productId]["quantity"]++;
-                break;
-            default:
-                echo "default";
-                break;
-        }
+        $cart[$productId]["quantity"]++;
 
         return $this->setCart($cart);
     }
@@ -88,9 +81,6 @@ class Cart
     function getTotal($item)
     {
         $total = $item["quantity"] * $item["price"];
-
-        $test = new Formatter();
-        $test->formatTotal($total);
 
         return $this->formatter->formatTotal($total);
     }
@@ -149,17 +139,9 @@ class Cart
     function removeFromCart($removeId)
     {
         $cart = $this->getCart();
-        switch ($removeId) {
-            case $removeId:
-                $cart[$removeId]["quantity"]--;
-                break;
-            default:
-                echo "default";
-                echo "<script>console.log('test')</script>";
-                break;
-        }
+        $cart[$removeId]["quantity"]--;
 
-        $this->setCart($cart);
+        return $this->setCart($cart);
 
     }
 }
@@ -242,7 +224,6 @@ class Formatter
      */
     function formatTotal($number)
     {
-
         return number_format($number, 2);
     }
 }

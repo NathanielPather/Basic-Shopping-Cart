@@ -2,8 +2,9 @@
 include("ShoppingCart.php");
 session_start();
 
-$products = new Products();
+
 $formatter = new Formatter();
+$products = new Products();
 $cart = new Cart($formatter);
 
 ?>
