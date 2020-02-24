@@ -4,9 +4,14 @@ session_start();
 
 class Cart
 {
-    public function __construct()
+    private $formatter;
+    private $products;
+
+    public function __construct($formatter, $products)
     {
         $_SESSION["Cart"] = $this->getCart();
+        $this->formatter = $formatter;
+        $this->products = $products;
     }
 
     /*
@@ -51,26 +56,7 @@ class Cart
     function addToCart($productId)
     {
         $cart = $this->getCart();
-        switch ($productId) {
-            case 0:
-                $cart[0]["quantity"]++;
-                break;
-            case 1:
-                $cart[1]["quantity"]++;
-                break;
-            case 2:
-                $cart[2]["quantity"]++;
-                break;
-            case 3:
-                $cart[3]["quantity"]++;
-                break;
-            case 4:
-                $cart[4]["quantity"]++;
-                break;
-            default:
-                echo "default";
-                break;
-        }
+        $cart[$productId]["quantity"]++;
 
         return $this->setCart($cart);
     }
@@ -83,8 +69,7 @@ class Cart
      */
     function getName($item)
     {
-        $products = new Products();
-        $productList = $products->getProducts();
+        $productList = $this->products->getProducts();
 
         return $productList[$item["id"]]["name"];
     }
@@ -98,9 +83,8 @@ class Cart
     function getTotal($item)
     {
         $total = $item["quantity"] * $item["price"];
-        $formatter = new Formatter();
 
-        return $formatter->formatTotal($total);
+        return $this->formatter->formatTotal($total);
     }
 
     /*
@@ -116,9 +100,8 @@ class Cart
                 $total += $_SESSION["Cart"][$i]["quantity"] * $_SESSION["Cart"][$i]["price"];
             }
         }
-        $formatter = new Formatter();
 
-        return $formatter->formatTotal($total);
+        return $this->formatter->formatTotal($total);
     }
 
     /*
@@ -128,19 +111,23 @@ class Cart
      */
     function listItems()
     {
-        $formatter = new Formatter();
         $html = "";
         $id = 0;
         foreach ($_SESSION["Cart"] as $item) {
             if ($item["quantity"] > 0) {
                 $html = $html .
                     '<pre>
-                        <div class="name">' . $this->getName($item) . '</div><div class="price">Price: $' . $formatter->formatPrice($item) . '</div><div class="quantity">Quantity: ' . $item["quantity"] . '</div><div class="total">Total: $' . $this->getTotal($item) . '</div><form class="removeForm" method="POST"><input class="removeInput" type="hidden" name="removeId" value=' . $id . ' /><input class="removeInput"  type="submit" name="removeButton" value="Remove from Cart" /></form>
+                        <div class="name">' . $this->getName($item) . '</div><div class="price">Price: $' . $this->formatter->formatPrice($item) . '</div><div class="quantity">Quantity: ' . $item["quantity"] . '</div><div class="total">Total: $' . $this->getTotal($item) . '</div><form class="removeForm" method="POST"><input class="removeInput" type="hidden" name="removeId" value=' . $id . ' /><input class="removeInput"  type="submit" name="removeButton" value="Remove from Cart" /></form>
                     </pre>';
             }
             $id++;
         }
 
+        return $this->outputTotal($html);
+    }
+
+    function outputTotal($html)
+    {
         $html = $html .
             '<pre>
                 <div class="overallTotal">Overall Total: $' . $this->getOverallTotal() . '</div>
@@ -158,28 +145,9 @@ class Cart
     function removeFromCart($removeId)
     {
         $cart = $this->getCart();
-        switch ($removeId) {
-            case 0:
-                $cart[0]["quantity"]--;
-                break;
-            case 1:
-                $cart[1]["quantity"]--;
-                break;
-            case 2:
-                $cart[2]["quantity"]--;
-                break;
-            case 3:
-                $cart[3]["quantity"]--;
-                break;
-            case 4:
-                $cart[4]["quantity"]--;
-                break;
-            default:
-                echo "default";
-                break;
-        }
+        $cart[$removeId]["quantity"]--;
 
-        $this->setCart($cart);
+        return $this->setCart($cart);
 
     }
 }
@@ -262,7 +230,6 @@ class Formatter
      */
     function formatTotal($number)
     {
-
         return number_format($number, 2);
     }
 }
