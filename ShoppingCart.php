@@ -2,54 +2,13 @@
 error_reporting(E_STRICT);
 session_start();
 
-/*
- * Represents individual cart items.
- */
-class cartItem {
-    private $name;
-    private $price;
-    private $quantity;
-    private $totalPrice;
-
-    public function construct($product, $quantity) {
-        $this->name = $product->name;
-        $this->price = $product->price;
-        $this->quantity = $quantity;
-        $this->totalPrice = $this->price * $this->quantity;
-    }
-}
-
-/*
- * Represents the cart.
- */
-
-class Cart2 {
-    private $products;
-    private $items;
-
-    public function __construct($products, $items = []) {
-        $this->products = $products;
-        $this->items = $items;
-    }
-
-    public function getItems() {
-        return $this->items;
-    }
-
-    public function add() {
-
-    }
-}
-
-/*
- * Current cart that needs refactoring.
- */
-
 class Cart
 {
-    public function __construct()
+    private $formatter;
+    public function __construct($formatter)
     {
         $_SESSION["Cart"] = $this->getCart();
+        $this->formatter = $formatter;
     }
 
     /*
@@ -129,9 +88,11 @@ class Cart
     function getTotal($item)
     {
         $total = $item["quantity"] * $item["price"];
-        $formatter = new Formatter();
 
-        return $formatter->formatTotal($total);
+        $test = new Formatter();
+        $test->formatTotal($total);
+
+        return $this->formatter->formatTotal($total);
     }
 
     /*
@@ -147,9 +108,9 @@ class Cart
                 $total += $_SESSION["Cart"][$i]["quantity"] * $_SESSION["Cart"][$i]["price"];
             }
         }
-        $formatter = new Formatter();
 
-        return $formatter->formatTotal($total);
+
+        return $this->formatter->formatTotal($total);
     }
 
     /*
@@ -159,14 +120,13 @@ class Cart
      */
     function listItems()
     {
-        $formatter = new Formatter();
         $html = "";
         $id = 0;
         foreach ($_SESSION["Cart"] as $item) {
             if ($item["quantity"] > 0) {
                 $html = $html .
                     '<pre>
-                        <div class="name">' . $this->getName($item) . '</div><div class="price">Price: $' . $formatter->formatPrice($item) . '</div><div class="quantity">Quantity: ' . $item["quantity"] . '</div><div class="total">Total: $' . $this->getTotal($item) . '</div><form class="removeForm" method="POST"><input class="removeInput" type="hidden" name="removeId" value=' . $id . ' /><input class="removeInput"  type="submit" name="removeButton" value="Remove from Cart" /></form>
+                        <div class="name">' . $this->getName($item) . '</div><div class="price">Price: $' . $this->formatter->formatPrice($item) . '</div><div class="quantity">Quantity: ' . $item["quantity"] . '</div><div class="total">Total: $' . $this->getTotal($item) . '</div><form class="removeForm" method="POST"><input class="removeInput" type="hidden" name="removeId" value=' . $id . ' /><input class="removeInput"  type="submit" name="removeButton" value="Remove from Cart" /></form>
                     </pre>';
             }
             $id++;
@@ -195,6 +155,7 @@ class Cart
                 break;
             default:
                 echo "default";
+                echo "<script>console.log('test')</script>";
                 break;
         }
 
@@ -202,43 +163,6 @@ class Cart
 
     }
 }
-
-/*
- * Represents individual products,
- */
-
-class Product {
-    private $name;
-    private $price;
-
-    public function construct($name, $price) {
-        $this->name = $name;
-        $this->price = $price;
-    }
-}
-
-/*
- * Represents a list of products.
- */
-
-class productsRepository {
-    function getProducts() {
-        return
-            // ######## please do not alter the following code ########
-            $products = [
-                ["name" => "Sledgehammer", "price" => 125.75],
-                ["name" => "Axe", "price" => 190.50],
-                ["name" => "Bandsaw", "price" => 562.131],
-                ["name" => "Chisel", "price" => 12.9],
-                ["name" => "Hacksaw", "price" => 18.45],
-            ];
-            // ########################################################
-    }
-}
-
-/*
- * Current product that needs refactoring.
- */
 
 class Products
 {
@@ -294,11 +218,6 @@ class Products
     }
 }
 
-/*
- * Represents the formatter.
- * Needs refactoring.
- */
-
 class Formatter
 {
 
@@ -325,53 +244,5 @@ class Formatter
     {
 
         return number_format($number, 2);
-    }
-}
-
-/*
- * Represents storage for the cart.
- * Probably more suited for handling database storing and loading.
- * But good practice still.
- */
-
-class CartSessionStorage {
-    private $products;
-
-    public function loadCart() {
-
-    }
-
-    public function saveCart() {
-
-    }
-}
-
-/*
- * Represents html render.
- */
-
-class Renderer {
-    private $formatter;
-
-    public function __construct($formatter){
-        $this->formatter = $formatter;
-    }
-
-    public function renderProducts($products) {
-        $html = "";
-
-        foreach($products->getProducts() as $product) {
-
-        }
-        return $html;
-    }
-
-    public function renderCart($cart) {
-        $html = "";
-
-        foreach($cart->getItems() as $item) {
-
-        }
-        return $html;
     }
 }

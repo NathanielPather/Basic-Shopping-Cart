@@ -3,7 +3,9 @@ include("ShoppingCart.php");
 session_start();
 
 $products = new Products();
-$cart = new Cart();
+$formatter = new Formatter();
+$cart = new Cart($formatter);
+
 ?>
 
 <!doctype html>
