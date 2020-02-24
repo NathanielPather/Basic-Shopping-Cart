@@ -5,10 +5,13 @@ session_start();
 class Cart
 {
     private $formatter;
-    public function __construct($formatter)
+    private $products;
+
+    public function __construct($formatter, $products)
     {
         $_SESSION["Cart"] = $this->getCart();
         $this->formatter = $formatter;
+        $this->products = $products;
     }
 
     /*
@@ -66,8 +69,7 @@ class Cart
      */
     function getName($item)
     {
-        $products = new Products();
-        $productList = $products->getProducts();
+        $productList = $this->products->getProducts();
 
         return $productList[$item["id"]]["name"];
     }
@@ -99,7 +101,6 @@ class Cart
             }
         }
 
-
         return $this->formatter->formatTotal($total);
     }
 
@@ -125,7 +126,8 @@ class Cart
         return $this->outputTotal($html);
     }
 
-    function outputTotal($html) {
+    function outputTotal($html)
+    {
         $html = $html .
             '<pre>
                 <div class="overallTotal">Overall Total: $' . $this->getOverallTotal() . '</div>

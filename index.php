@@ -5,7 +5,7 @@ session_start();
 
 $formatter = new Formatter();
 $products = new Products();
-$cart = new Cart($formatter);
+$cart = new Cart($formatter, $products);
 
 ?>
 
