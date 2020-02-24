@@ -122,6 +122,10 @@ class Cart
             $id++;
         }
 
+        return $this->outputTotal($html);
+    }
+
+    function outputTotal($html) {
         $html = $html .
             '<pre>
                 <div class="overallTotal">Overall Total: $' . $this->getOverallTotal() . '</div>
